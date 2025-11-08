@@ -53,8 +53,8 @@ public class CharacterMovement : MonoBehaviour
 
     void TakeDamage(ControllerColliderHit hit)
     {
-        currentLives--;
-        Debug.Log("Kena damage ! Nyawa tersisa : " + currentLives);
+        //currentLives--;
+        //Debug.Log("Kena damage ! Nyawa tersisa : " + currentLives);
 
     }
 
