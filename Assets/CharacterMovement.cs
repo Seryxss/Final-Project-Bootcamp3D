@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    public float runningSpeed = 10f;
-    public float walkSpeed = 5f;
+    public float runningSpeed = 5f;
+    public float walkSpeed = 0.3f;
     public float gravity = -9.8f;
     public float jumpHeight = 2f;
     public float turnSpeed = 120f;
@@ -17,8 +17,11 @@ public class CharacterMovement : MonoBehaviour
     private int currentLives;
     public bool isFalling;
 
-    public TextMeshProUGUI livesText;  
+    public TextMeshProUGUI livesText;
     public float fallForce = 5f;
+    private bool isSprinting = false;
+    private float walkSpeedRatioNormalized = 0.5f;
+    
 
     CharacterController characterController;
     Animator animator;
@@ -59,12 +62,15 @@ public class CharacterMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
 
         Vector3 direction = new Vector3(moveX, 0, moveZ).normalized;
+
+        isSprinting = Input.GetKey(KeyCode.LeftShift);
+ 
 
         if (direction.magnitude >= 0.1f)
         {
@@ -75,7 +81,7 @@ public class CharacterMovement : MonoBehaviour
             Vector3 moveDir = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
 
             // apply shift (walk run) modifier *before* movement
-            float finalSpeed = Input.GetKey(KeyCode.LeftShift) ? runningSpeed : walkSpeed ;
+            float finalSpeed = isSprinting ? runningSpeed : walkSpeed;
 
             // move horizontally
             characterController.Move(moveDir.normalized * finalSpeed * Time.deltaTime);
@@ -87,12 +93,14 @@ public class CharacterMovement : MonoBehaviour
         {
             // small downward force to keep grounded contact stable
             velocity.y = -2f;
+            animator.SetBool("jump", false);
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
         {
             // set initial jump velocity upward
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            animator.SetBool("jump", true);
         }
 
         // apply gravity every frame
@@ -100,12 +108,19 @@ public class CharacterMovement : MonoBehaviour
 
         // apply vertical movement separately
         characterController.Move(velocity * Time.deltaTime);
-
-        UpdateAnimation(Mathf.Clamp01(new Vector2(moveX, moveZ).magnitude));
+        float moveSpeedMotionNormalized = Mathf.Clamp01(new Vector2(moveX, moveZ).magnitude);
+        if (!isSprinting)
+        {
+            if (moveSpeedMotionNormalized > walkSpeedRatioNormalized)
+            {
+                moveSpeedMotionNormalized = walkSpeedRatioNormalized;
+            }
+        }
+        animator.SetFloat("speed", Mathf.Abs(moveSpeedMotionNormalized));
     }
 
     void UpdateAnimation(float moveInput)
     {
-        animator.SetFloat("speed", Mathf.Abs(moveInput));
+        
     }
 }
