@@ -21,7 +21,7 @@ MonoBehaviour:
     value: 0
   intensity:
     overrideState: 1
-    value: 2
+    value: 2.99
   color:
     overrideState: 0
     value: {r: 0, g: 0, b: 0, a: 1}
@@ -40,6 +40,9 @@ MonoBehaviour:
   thicknessModifier:
     overrideState: 0
     value: 1
+  zBias:
+    overrideState: 0
+    value: 0.0001
   directLightingStrength:
     overrideState: 0
     value: 0
@@ -76,7 +79,7 @@ MonoBehaviour:
     value: 50
   kernelSize:
     overrideState: 1
-    value: 1
+    value: 2
 --- !u!114 &-726392404023855301
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -130,10 +133,10 @@ MonoBehaviour:
     value: 1
   temperature:
     overrideState: 1
-    value: 10
+    value: 73
   tint:
     overrideState: 1
-    value: 80
+    value: 100
   colorFilter:
     overrideState: 0
     value: {r: 1, g: 1, b: 1, a: 1}
@@ -1420,7 +1423,7 @@ MonoBehaviour:
   active: 1
   enabled:
     overrideState: 1
-    value: 1
+    value: 0
   intensity:
     overrideState: 1
     value: 0.66
@@ -1431,17 +1434,17 @@ MonoBehaviour:
     overrideState: 1
     value: 0.861
   clamp:
-    overrideState: 0
+    overrideState: 1
     value: 65472
   diffusion:
     overrideState: 1
     value: 7.03
   anamorphicRatio:
     overrideState: 0
-    value: 0
+    value: -0.33
   color:
     overrideState: 1
-    value: {r: 1, g: 0.99607843, b: 0.9137255, a: 1}
+    value: {r: 1, g: 0.97984564, b: 0.5566037, a: 1}
   fastMode:
     overrideState: 1
     value: 1
