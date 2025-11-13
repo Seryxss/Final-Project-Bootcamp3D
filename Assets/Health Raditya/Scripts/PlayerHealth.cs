@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
+    private static WaitForSeconds _waitForSeconds1 = new WaitForSeconds(1f);
     [Header("Health Settings")]
     public int maxHealth = 3;
     private int currentHealth;
@@ -16,7 +17,7 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("References")]
     public Animator playerAnimator;    // drag animator player
-    public PlayerMovement movement;    // script movement player
+    public CharacterMovement movement;    // script movement player
     private PlayerBlinkEffect blinkEffect;
 
     [Header("Camera Effect (optional)")]
@@ -25,12 +26,7 @@ public class PlayerHealth : MonoBehaviour
 
     private bool isDead = false;
 
-    [Header("UI Game Over")]
-    public GameObject gameOverUI;
-
-    [Header("Game Over")]
-    public AudioSource gameOverSound;
-    private bool isGameOver = false;
+    public bool isGameOver = false;
 
     [HideInInspector] public bool isInvincible = false;
 
@@ -56,32 +52,23 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void playerCollided(GameObject gameObject)
     {
-        if (collision.gameObject.CompareTag("Obstacle") && !isDead)
-        {
-            TakeDamage();
-        }
+            if (gameObject.CompareTag("Obstacle") && !isDead && !isInvincible)
+            {
+                Debug.Log("Stumbled into: " + name);
+                TakeDamage(1);
+            }
+            else if (gameObject.CompareTag("Danger") && !isDead && !isInvincible)
+            {
+                Debug.Log("Hit by car: " + name);
+                TakeDamage(3);
+            }
     }
 
-    public void TakeDamage()
+    public void OnControllerColliderHit(ControllerColliderHit collision)
     {
-        currentHealth--;
-        UpdateHeartsUI();
-        GetComponent<DamageBlink>().TriggerBlink();
-
-        if (blinkEffect != null)
-            blinkEffect.Blink(); // efek samar
-
-        if (playerAnimator != null)
-            playerAnimator.SetTrigger("Hit"); // mainkan animasi hit (kalau ada)
-
-        StartCoroutine(CameraShake(0.15f, 0.1f)); // efek kamera bergetar kecil
-
-        if (currentHealth <= 0)
-        {
-            GameOver();
-        }
+        playerCollided(collision.gameObject);
     }
 
     IEnumerator CameraShake(float duration, float magnitude)
@@ -101,7 +88,7 @@ public class PlayerHealth : MonoBehaviour
         mainCamera.transform.localPosition = originalCamPos;
     }
 
-    void GameOver()
+    public void GameOver(string deathCause)
     {
         isDead = true;
 
@@ -111,23 +98,14 @@ public class PlayerHealth : MonoBehaviour
         if (movement != null)
             movement.enabled = false; // matikan script gerak player
 
-          // munculkan UI GameOver
-        if (gameOverUI != null)
-            gameOverUI.SetActive(true);
-        // GameOverUI.SetActive(true);
-    
-        // mainkan suara game over
-        if (gameOverSound != null)
-            gameOverSound.Play();
-            
+        FindObjectOfType<GameManager>().GameOver(deathCause);
         Debug.Log("Game Over!");
-    } 
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Obstacle") && !isInvincible)
-        {
-            TakeDamage();
-        }
+        Debug.Log("TOnTriggerEnter: " + other.tag + "| other.tag:" + (other.tag == "Obstacle") + "| isInvincible:" + isInvincible + "|isDead." + isDead);
+        playerCollided(other.gameObject);
     }
 
     public void TakeDamage(int amount)
@@ -135,20 +113,34 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= amount;
         Debug.Log("Player kena obstacle! Health sekarang: " + currentHealth);
 
+        UpdateHeartsUI();
+        GetComponent<DamageBlink>().TriggerBlink();
+
         if (currentHealth <= 0)
         {
             Debug.Log("Game Over!");
-            // Kamu bisa tambahkan logika game over di sini
+            if (amount > 1)
+            {
+                GameOver("Tertabrak mobil...");
+            }
+            else
+            {
+                GameOver("Terjatuh...");
+            }
         }
-
-        StartCoroutine(InvincibleTime());
+        else
+        {
+            StartCoroutine(InvincibleTime());
+        }
     }
 
     private IEnumerator InvincibleTime()
     {
+        Debug.Log("Player is invincible");
         isInvincible = true;
-        yield return new WaitForSeconds(1f);
+        yield return _waitForSeconds1;
         isInvincible = false;
+        Debug.Log("Player is now non invincible");
     }
 }
 
