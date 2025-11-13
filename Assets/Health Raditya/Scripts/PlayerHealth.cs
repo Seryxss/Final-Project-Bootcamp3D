@@ -16,7 +16,7 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("References")]
     public Animator playerAnimator;    // drag animator player
-    public PlayerMovement movement;    // script movement player
+    public CharacterMovement movement;    // script movement player
     private PlayerBlinkEffect blinkEffect;
 
     [Header("Camera Effect (optional)")]
@@ -30,7 +30,7 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Game Over")]
     public AudioSource gameOverSound;
-    private bool isGameOver = false;
+    public bool isGameOver = false;
 
     [HideInInspector] public bool isInvincible = false;
 
@@ -110,6 +110,8 @@ public class PlayerHealth : MonoBehaviour
 
         if (movement != null)
             movement.enabled = false; // matikan script gerak player
+
+        FindObjectOfType<GameManager>().GameOver(); 
 
           // munculkan UI GameOver
         if (gameOverUI != null)

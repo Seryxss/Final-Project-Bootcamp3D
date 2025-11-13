@@ -21,6 +21,7 @@ public class CharacterMovement : MonoBehaviour
     public float fallForce = 5f;
     private bool isSprinting = false;
     private float walkSpeedRatioNormalized = 0.5f;
+    private PlayerHealth playerHealth;
     
 
     CharacterController characterController;
@@ -34,7 +35,7 @@ public class CharacterMovement : MonoBehaviour
         currentLives = maxLives;
         isFalling = false;
 
-
+        playerHealth = GetComponent<PlayerHealth>();
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -70,6 +71,12 @@ public class CharacterMovement : MonoBehaviour
         Vector3 direction = new Vector3(moveX, 0, moveZ).normalized;
 
         isSprinting = Input.GetKey(KeyCode.LeftShift);
+
+        if (playerHealth != null && playerHealth.isGameOver)
+        {
+            animator.SetFloat("speed", 0);
+            return;  // stop movement when game is over
+        }
  
 
         if (direction.magnitude >= 0.1f)

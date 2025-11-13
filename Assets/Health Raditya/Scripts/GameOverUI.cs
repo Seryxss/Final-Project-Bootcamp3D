@@ -7,7 +7,9 @@ public class GameOverUI : MonoBehaviour
 {
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Debug.Log("RestartGame() Terpanggil");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        FindObjectOfType<GameManager>().RestartGame();
     }
 
     public void QuitGame()
@@ -15,4 +17,5 @@ public class GameOverUI : MonoBehaviour
         Debug.Log("Game quit!"); // Bisa nanti kamu ganti dengan Application.Quit()
         Application.Quit();
     }
+    
 }
