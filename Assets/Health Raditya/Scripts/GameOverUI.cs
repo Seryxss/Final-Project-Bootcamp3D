@@ -23,8 +23,8 @@ public class GameOverUI : MonoBehaviour
     }
 
     public void setGameClear()
-  {
-    GameOverText.text = "~CLEAR~";
-  }
+    {
+      GameOverText.text = "~CLEAR~";
+    }
     
 }

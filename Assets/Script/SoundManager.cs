@@ -7,7 +7,8 @@ public enum SoundType
     BackgroudMusic,
     GameOver,
     ReachingDestination,
-    HitObstacle
+    HitObstacle,
+    Clear
 }
 public class SoundManager : MonoBehaviour
 {
@@ -35,4 +36,6 @@ public class SoundManager : MonoBehaviour
     {
         MusicaudioSource.Stop();
     }
+    
+
 }

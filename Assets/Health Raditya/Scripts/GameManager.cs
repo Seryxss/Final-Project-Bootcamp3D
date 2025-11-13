@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
         isGameOver = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        
+
     }
 
     public void GameOver(string deathCause)
@@ -26,25 +26,30 @@ public class GameManager : MonoBehaviour
         //Tampilkan UI Game Over
         if (gameOverUI != null)
             gameOverUI.SetActive(true);
-        FindObjectOfType<PlayerBonusTime>().setPermanentText(deathCause); 
+        FindObjectOfType<PlayerBonusTime>().setPermanentText(deathCause);
         //Lepas kursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         // mainkan suara game over
         if (gameOverSound != null)
             gameOverSound.Play();
-        
+
         FindObjectOfType<SoundManager>().stopBackgroundMusic();
     }
 
     public void GameClear()
     {
+        isGameOver = true;
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         FindObjectOfType<SoundManager>().stopBackgroundMusic();
-        FindObjectOfType<PlayerBonusTime>().SetText5Seconds("Stage Clear!"); 
-        FindObjectOfType<GameOverUI>().setGameClear();
+        FindObjectOfType<PlayerBonusTime>().setPermanentText("Stage Clear!");
+        SoundManager.PlaySound(SoundType.Clear, 0.7f);
         if (gameOverUI != null)
             gameOverUI.SetActive(true);
-        FindObjectOfType<Timer>().StopTimer(); 
+        FindObjectOfType<Timer>().StopTimer();
+        FindObjectOfType<GameOverUI>().setGameClear();
     }
 
     public void RestartGame()
@@ -62,7 +67,7 @@ public class GameManager : MonoBehaviour
         // Kunci kursor lagi setelah restart
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
