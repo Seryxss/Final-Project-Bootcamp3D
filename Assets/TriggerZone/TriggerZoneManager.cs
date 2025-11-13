@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TriggerZoneManager : MonoBehaviour
 {
     private List<GameObject> _triggerZones = new List<GameObject>();
 
-    // Start is called before the first frame update
     void Start()
     {
         InitTriggerZonesList();
@@ -30,11 +30,5 @@ public class TriggerZoneManager : MonoBehaviour
         if (_triggerZones.Count == 0) {
             Debug.Log("Semua Paket/Rumah Telah Selesai");
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
