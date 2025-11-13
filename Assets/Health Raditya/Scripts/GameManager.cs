@@ -7,16 +7,18 @@ public class GameManager : MonoBehaviour
 {
     public static bool isGameOver = false;
     public GameObject gameOverUI;
-
+    [Header("Game Over")]
+    public AudioSource gameOverSound;
     void Start()
     {
         Time.timeScale = 1f;
         isGameOver = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        
     }
 
-    public void GameOver()
+    public void GameOver(string deathCause)
     {
         isGameOver = true;
         Time.timeScale = 0f;
@@ -24,10 +26,25 @@ public class GameManager : MonoBehaviour
         //Tampilkan UI Game Over
         if (gameOverUI != null)
             gameOverUI.SetActive(true);
-
+        FindObjectOfType<PlayerBonusTime>().setPermanentText(deathCause); 
         //Lepas kursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        // mainkan suara game over
+        if (gameOverSound != null)
+            gameOverSound.Play();
+        
+        FindObjectOfType<SoundManager>().stopBackgroundMusic();
+    }
+
+    public void GameClear()
+    {
+        FindObjectOfType<SoundManager>().stopBackgroundMusic();
+        FindObjectOfType<PlayerBonusTime>().SetText5Seconds("Stage Clear!"); 
+        FindObjectOfType<GameOverUI>().setGameClear();
+        if (gameOverUI != null)
+            gameOverUI.SetActive(true);
+        FindObjectOfType<Timer>().StopTimer(); 
     }
 
     public void RestartGame()

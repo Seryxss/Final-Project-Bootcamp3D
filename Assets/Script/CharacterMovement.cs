@@ -38,29 +38,20 @@ public class CharacterMovement : MonoBehaviour
         playerHealth = GetComponent<PlayerHealth>();
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if(hit.gameObject.CompareTag("Danger"))
-        {
-            if (isFalling == false)
-            {
-                isFalling = true;
-                TakeDamage(hit);
-                velocity.x -= gravity * Time.deltaTime;
-                characterController.Move(velocity * Time.deltaTime);
-                animator.SetTrigger("falling");
-                animator.SetFloat("speed", 0);
-                isFalling = false;
-            }
-        }
-    }
+    // private void OnControllerColliderHit(ControllerColliderHit collision)
+    // {
+    //     if (collision.gameObject.CompareTag("Obstacle") && !collision.gameObject.CompareTag("Untagged") && !collision.gameObject.CompareTag("IgnoreCamera"))
+    //     {
+    //         Debug.Log("OUCH: " + collision.gameObject.name);
+    //     }
+    // }
 
-    void TakeDamage(ControllerColliderHit hit)
-    {
-        //currentLives--;
-        //Debug.Log("Kena damage ! Nyawa tersisa : " + currentLives);
+    // void TakeDamage(ControllerColliderHit hit)
+    // {
+    //     //currentLives--;
+    //     //Debug.Log("Kena damage ! Nyawa tersisa : " + currentLives);
 
-    }
+    // }
 
     // Update is called once per frame
     void FixedUpdate()

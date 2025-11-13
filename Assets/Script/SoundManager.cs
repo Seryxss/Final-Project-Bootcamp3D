@@ -30,4 +30,9 @@ public class SoundManager : MonoBehaviour
     {
         instance.SFXaudioSource.PlayOneShot(instance.soundList[(int)sound], volume);
     }
+
+    public void stopBackgroundMusic()
+    {
+        MusicaudioSource.Stop();
+    }
 }

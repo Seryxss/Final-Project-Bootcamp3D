@@ -7,48 +7,21 @@ using UnityEngine.UIElements;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI timerText;
-    [SerializeField] float MaxTime;
-    [SerializeField] float MaxTimeTargetB;
+    [SerializeField]
+    TextMeshProUGUI timerText;
 
-    public GameObject BoxA;
-    public GameObject BoxB;
-    public int A;
+    [SerializeField]
+    float MaxTime;
+
     public GameObject PanelGameOver;
-    public GameObject player;
-    private bool isGameOver = false;
-    public bool isTimerJalan = false;
+    public bool isTimerRunning = false;
 
+    public float currentTime;
 
-
-    public float elapsedTime;
     // Start is called before the first frame update
     void Start()
     {
-        elapsedTime = MaxTime;
-        List<int> numbers = new List<int>();
-
-        // Isi list dengan angka 1 sampai 10
-        for (int i = 1; i <= 3; i++)
-            numbers.Add(i);
-        int hasilrnd;
-        hasilrnd = Random.Range(1,3);
-        Debug.Log("HASIL RND : " + hasilrnd);
-
-        if (hasilrnd == 1)
-        {
-            BoxA.transform.position = new Vector3(48f, 62f, -60f);
-
-        }else if (hasilrnd == 2)
-        {
-            BoxA.transform.position = new Vector3(48f, 62f, 0f);
-
-        }else if (hasilrnd == 3)
-        {
-            BoxA.transform.position = new Vector3(80f, 62f, -60f);
-        }
-
-
+        currentTime = MaxTime;
     }
 
     public void RestartGame()
@@ -59,53 +32,54 @@ public class Timer : MonoBehaviour
 
     public void AddTime(float amount)
     {
-        elapsedTime += amount;
+        currentTime += amount;
         UpdateTimerDisplay();
     }
 
     public void UpdateTimerDisplay()
     {
-        int minutes = Mathf.FloorToInt(elapsedTime / 60);
-        int seconds = Mathf.FloorToInt(elapsedTime % 60);
+        int minutes = Mathf.FloorToInt(currentTime / 60);
+        int seconds = Mathf.FloorToInt(currentTime % 60);
 
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
-    public void SelesaiGame()
+    public void StartTimer()
     {
-        Time.timeScale = 0f;
+        isTimerRunning = true;
+    }
 
+    public void StopTimer()
+    {
+        isTimerRunning = false;
     }
 
     public float GetElapsedTime()
     {
-        return elapsedTime;
+        return currentTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isTimerJalan == true && isGameOver == false && elapsedTime > 0)
+        if (isTimerRunning == true && currentTime > 0)
         {
-            elapsedTime = elapsedTime - Time.deltaTime;
-
+            currentTime -= Time.deltaTime;
         }
-        else
+        if (currentTime < 0)
         {
-            if (elapsedTime < 0)
-            {
-                elapsedTime = 0;
-                isGameOver = true;
-            }
-        }
-        if (isGameOver == true)
-        {
-            PanelGameOver.SetActive(true);
-            Time.timeScale = 0f;
-            // player.getComponent<CharacterMovement>().enabled = false;
+            currentTime = 0;
+            isTimerRunning = false;
+            GameOver();
         }
         UpdateTimerDisplay();
-        Debug.Log("Status Game Over : " + isGameOver);
+        // Debug.Log("time : " + currentTime);
+    }
 
+    void GameOver()
+    {   
+        // FindObjectOfType<GameManager>().GameOver("Waktu habis..."); 
+        FindObjectOfType<PlayerHealth>().GameOver("Waktu habis...");
+        currentTime = 0;
     }
 }

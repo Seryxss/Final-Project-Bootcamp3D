@@ -14,7 +14,7 @@ public class TriggerZoneManager : MonoBehaviour
 
     void Start()
     {   
-        GameObject targetGameObject = GameObject.Find("objManager");
+        GameObject targetGameObject = GameObject.Find("ObjectiveManager");
         if (targetGameObject != null)
         {
             objectiveManager = targetGameObject.GetComponent<ObjectiveManager>();
@@ -43,10 +43,14 @@ public class TriggerZoneManager : MonoBehaviour
         {
             Debug.Log("Paket/Rumah Tersisa: " + _triggerZones.Count);
             if (_triggerZones.Count == 0 ) {
+                FindObjectOfType<GameManager>().GameClear(); 
                 Debug.Log("Semua Paket/Rumah Telah Selesai");
                 if (arrowTransform != null) {
                     arrowTransform.gameObject.SetActive(false);
                 }
+            } else {
+                FindObjectOfType<PlayerBonusTime>().playerPickedupBox(); 
+
             }
         } else {
             Debug.Log("Game dimulai!");
@@ -61,6 +65,9 @@ public class TriggerZoneManager : MonoBehaviour
             }
 
             Debug.Log("Paket/Rumah Tersisa: " + _triggerZones.Count);
+            Debug.Log("Start timer");
+            FindObjectOfType<Timer>().StartTimer(); 
+            FindObjectOfType<PlayerBonusTime>().SetText15Seconds("Ikuti arah panah! Hindari obstacles dan mobil!"); 
         }
     }
 
