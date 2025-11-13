@@ -9,6 +9,7 @@ TagManager:
   - Box B
   - Start Box
   - Obstacle
+  - Box C
   layers:
   - Default
   - TransparentFX

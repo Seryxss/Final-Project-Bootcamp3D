@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class Timer : MonoBehaviour
 {
@@ -11,6 +11,9 @@ public class Timer : MonoBehaviour
     [SerializeField] float MaxTime;
     [SerializeField] float MaxTimeTargetB;
 
+    public GameObject BoxA;
+    public GameObject BoxB;
+    public int A;
     public GameObject PanelGameOver;
     public GameObject player;
     private bool isGameOver = false;
@@ -23,6 +26,29 @@ public class Timer : MonoBehaviour
     void Start()
     {
         elapsedTime = MaxTime;
+        List<int> numbers = new List<int>();
+
+        // Isi list dengan angka 1 sampai 10
+        for (int i = 1; i <= 3; i++)
+            numbers.Add(i);
+        int hasilrnd;
+        hasilrnd = Random.Range(1,3);
+        Debug.Log("HASIL RND : " + hasilrnd);
+
+        if (hasilrnd == 1)
+        {
+            BoxA.transform.position = new Vector3(48f, 62f, -60f);
+
+        }else if (hasilrnd == 2)
+        {
+            BoxA.transform.position = new Vector3(48f, 62f, 0f);
+
+        }else if (hasilrnd == 3)
+        {
+            BoxA.transform.position = new Vector3(80f, 62f, -60f);
+        }
+
+
     }
 
     public void RestartGame()
