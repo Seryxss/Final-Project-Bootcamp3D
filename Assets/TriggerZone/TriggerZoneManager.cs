@@ -5,7 +5,6 @@ using UnityEngine;
 public class TriggerZoneManager : MonoBehaviour
 {
     private List<GameObject> _triggerZones = new List<GameObject>();
-    public Transform target; // The player
     public Transform arrowTransform; // The arrow GameObject
     public float rotationOffsetY = -45f; // Y-axis offset only
 

@@ -10,11 +10,13 @@ public class TriggerZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        print(other.gameObject.name);
         if (other.CompareTag("Player"))
         {
             if (OnTrigger != null)
             {
                 OnTrigger.Invoke(this);
+                SoundManager.PlaySound(SoundType.ReachingDestination, 0.7f);
             }
             //Debug.Log("Paket Berhasil Diserahkan");
             //// _textPick.SetActive(true);
