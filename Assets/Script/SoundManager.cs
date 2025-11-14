@@ -5,10 +5,9 @@ using UnityEngine;
 public enum SoundType
 {
     BackgroudMusic,
-    GameOver,
+    Clear,
     ReachingDestination,
     HitObstacle,
-    Clear
 }
 public class SoundManager : MonoBehaviour
 {

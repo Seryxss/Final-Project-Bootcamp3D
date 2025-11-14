@@ -11,7 +11,10 @@ public class PlayerBonusTime : MonoBehaviour
     [SerializeField] float TambahanWaktu;
 
     // public TextMeshProUGUI TextFinish;
+    public GameObject mentor;
     public TextMeshProUGUI TextKeterangan;
+    public TextMeshProUGUI TextClear;
+    public TextMeshProUGUI DeadCauseText;
 
     private static WaitForSeconds _waitForSeconds5 = new WaitForSeconds(5f);
     private static WaitForSeconds _waitForSeconds15 = new WaitForSeconds(15f);
@@ -23,10 +26,22 @@ public class PlayerBonusTime : MonoBehaviour
         TextKeterangan.text = str;
     }
 
+    public void setTextClear(string str)
+    {
+        TextClear.text = str;
+    }
+
+    public void setDeadCause(string str)
+    {
+        mentor.SetActive(false);
+        DeadCauseText.text = str;
+    }
+
     public void playerPickedupBox()
     {
 
         {
+            mentor.SetActive(true);
             GameTimer.AddTime(TambahanWaktu);
             GameTimer.UpdateTimerDisplay();
             SetText5Seconds("+" + TambahanWaktu + " seconds");
@@ -46,6 +61,7 @@ public class PlayerBonusTime : MonoBehaviour
     {   
         TextKeterangan.text = str;
         yield return yieldtime;
+        mentor.SetActive(false);
         TextKeterangan.text = "";
         Debug.Log("TextCleared");
     }

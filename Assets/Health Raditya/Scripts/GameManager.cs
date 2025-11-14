@@ -2,21 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static bool isGameOver = false;
-    public GameObject gameOverUI;
+    public GameObject gameLoseUI;
+    public GameObject gameWinUI;
+    public GameObject gameTimeLeft;
+
     [Header("Game Over")]
     public AudioSource gameOverSound;
+
     void Start()
     {
         Time.timeScale = 1f;
         isGameOver = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
     }
+
 
     public void GameOver(string deathCause)
     {
@@ -24,9 +30,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
 
         //Tampilkan UI Game Over
-        if (gameOverUI != null)
-            gameOverUI.SetActive(true);
-        FindObjectOfType<PlayerBonusTime>().setPermanentText(deathCause);
+        if (gameLoseUI != null)
+            gameLoseUI.SetActive(true);
+        FindObjectOfType<PlayerBonusTime>().setDeadCause(deathCause);
         //Lepas kursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -44,10 +50,44 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         FindObjectOfType<SoundManager>().stopBackgroundMusic();
-        FindObjectOfType<PlayerBonusTime>().setPermanentText("Stage Clear!");
+
+        var timer = FindObjectOfType<Timer>();
+        float timeLeft = timer != null ? timer.GetElapsedTime() : 0f;
+        int minutes = Mathf.FloorToInt(timeLeft / 60f);
+        int seconds = Mathf.FloorToInt(timeLeft % 60f);
+        string formatted = string.Format("Time Remaining : {0:00}:{1:00}", minutes, seconds);
+
+        if (gameTimeLeft != null)
+        {
+            var tmp = gameTimeLeft.GetComponent<TextMeshProUGUI>();
+            if (tmp != null) tmp.text = formatted;
+            else
+            {
+                var uiText = gameTimeLeft.GetComponent<Text>();
+                if (uiText != null) uiText.text = formatted;
+            }
+        }
+
+        FindObjectOfType<PlayerBonusTime>().setTextClear("Stage Clear!");
         SoundManager.PlaySound(SoundType.Clear, 0.7f);
-        if (gameOverUI != null)
-            gameOverUI.SetActive(true);
+        if (gameWinUI != null)
+        {
+            gameWinUI.SetActive(true);
+            var gw = gameWinUI.GetComponent<GameWin>();
+            if (gw == null) gw = FindObjectOfType<GameWin>();
+            if (gw != null) 
+            {
+                int starsEarned = gw.Evaluate();
+                string levelKey = "Stars_" + SceneManager.GetActiveScene().name;
+                int prevStars = PlayerPrefs.GetInt(levelKey, 0);
+                if (starsEarned > prevStars)
+                {
+                    PlayerPrefs.SetInt(levelKey, starsEarned);
+                    PlayerPrefs.Save();
+                }
+            }
+        }
+
         FindObjectOfType<Timer>().StopTimer();
         FindObjectOfType<GameOverUI>().setGameClear();
     }
@@ -69,6 +109,13 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void BacktoStartMenu()
+    {
+        Time.timeScale = 1f;
+        Debug.Log("Back to StartMenu!");
+        SceneManager.LoadScene("StartMenu");
     }
 
     public void QuitGame()
