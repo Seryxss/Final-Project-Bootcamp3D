@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StoryboardManager : MonoBehaviour
 {
@@ -51,6 +52,14 @@ public class StoryboardManager : MonoBehaviour
 
     public void PlayGame()
     {
-        ui.ActivateGameplay();
+        FadeCanvas fade = FindObjectOfType<FadeCanvas>();
+        if (fade != null)
+        {
+            fade.FadeIn(() => SceneManager.LoadScene("Gameplay"));
+        }
+        else
+        {
+            SceneManager.LoadScene("Gameplay");
+        }
     }
 }

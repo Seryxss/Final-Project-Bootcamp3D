@@ -11,12 +11,17 @@ public class GameManager : MonoBehaviour
     public GameObject gameLoseUI;
     public GameObject gameWinUI;
     public GameObject gameTimeLeft;
+    [SerializeField] private GameObject canvas;
+    [SerializeField] private FadeCanvas fade;
 
     [Header("Game Over")]
     public AudioSource gameOverSound;
+    
 
     void Start()
     {
+        canvas.SetActive(true);
+        fade.FadeOut();
         Time.timeScale = 1f;
         isGameOver = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -111,11 +116,21 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void BacktoStartMenu()
+    public void BacktoLevelMenu()
     {
+        canvas.SetActive(false);
         Time.timeScale = 1f;
-        Debug.Log("Back to StartMenu!");
-        SceneManager.LoadScene("StartMenu");
+        UIManager.nextPanelToShow = "Level";
+        
+        FadeCanvas fade = FindObjectOfType<FadeCanvas>();
+        if (fade != null)
+        {
+            fade.FadeIn(() => SceneManager.LoadScene("StartMenu"));
+        }
+        else
+        {
+            SceneManager.LoadScene("StartMenu");
+        }
     }
 
     public void QuitGame()

@@ -91,6 +91,7 @@ public class PlayerHealth : MonoBehaviour
     public void GameOver(string deathCause)
     {
         isDead = true;
+        isGameOver = true;
 
         if (playerAnimator != null)
             playerAnimator.SetTrigger("Die");
@@ -110,6 +111,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
+        SoundManager.PlaySound(SoundType.HitObstacle, 0.7f);
         currentHealth -= amount;
         Debug.Log("Player kena obstacle! Health sekarang: " + currentHealth);
 

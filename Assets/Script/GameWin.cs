@@ -22,8 +22,13 @@ public class GameWin : MonoBehaviour
     public float twoStarThreshold;
     public float threeStarThreshold;
 
+    private PlayerHealth playerHealth;
+
     void Start()
-    {
+    {   
+        playerHealth = FindObjectOfType<PlayerHealth>();
+        
+
         if (twoStarThresholdText != null)
         {
             int m = Mathf.FloorToInt(twoStarThreshold / 60f);

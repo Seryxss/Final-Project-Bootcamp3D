@@ -9,12 +9,28 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject creditPanel;
     [SerializeField] private FadeCanvas fade;
     private AsyncOperation loadOp;
+    public static string nextPanelToShow = "Start";
 
     // Tampilkan start panel
     void Start()
     {
         //PlayerPrefs.DeleteAll(); //=> Kalau Mau hapus data penyimpanan e.g stars
-        fade.FadeOut();
+        if (nextPanelToShow == "Start")
+        {
+            ShowStart();
+        }
+        else if (nextPanelToShow == "Level")
+        {
+            ShowLevel();
+        }
+        else if (nextPanelToShow == "Story")
+        {
+            ShowStory();
+        }
+        else if (nextPanelToShow == "Credit")
+        {
+            ShowCredit();
+        }
     }
 
     public void ShowStart()
