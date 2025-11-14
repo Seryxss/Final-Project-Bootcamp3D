@@ -13,12 +13,12 @@ public class GameWin : MonoBehaviour
     public Sprite starOnSprite; 
     public Sprite starOffSprite;
 
-    [Header("Optional UI")]
+    [Header("Text UI")]
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI twoStarThresholdText;
     public TextMeshProUGUI threeStarThresholdText;
 
-    [Header("Thresholds (seconds)")]
+    [Header("Thresholds")]
     public float twoStarThreshold;
     public float threeStarThreshold;
 
