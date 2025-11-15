@@ -11,6 +11,7 @@ public class TriggerZoneManager : MonoBehaviour
     public float rotationOffsetY = -45f; // Y-axis offset only
     private ObjectiveManager objectiveManager;
     private GameObject player;
+    public int completedCount = 0;
 
     void Start()
     {   
@@ -41,6 +42,7 @@ public class TriggerZoneManager : MonoBehaviour
         
         if (!triggerZone.isStart)
         {
+            completedCount++;
             Debug.Log("Paket/Rumah Tersisa: " + _triggerZones.Count);
             if (_triggerZones.Count == 0 ) {
                 FindObjectOfType<GameManager>().GameClear(); 

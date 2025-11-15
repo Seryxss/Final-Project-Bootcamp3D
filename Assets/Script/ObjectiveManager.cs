@@ -6,6 +6,7 @@ public class ObjectiveManager : MonoBehaviour
 {
 
     [SerializeField] public GameObject triggerZonePrefab;
+    public int countLocation = 3;
 
     private GameObject getRandomRecipient()
     {
@@ -19,7 +20,7 @@ public class ObjectiveManager : MonoBehaviour
     public List<GameObject> spawnRandomTriggerZone()
     {
         List<GameObject> _triggerZones = new List<GameObject>();
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < countLocation; i++)
         {
             
             // Instantiation at a specific position and rotation

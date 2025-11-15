@@ -50,7 +50,7 @@ public class CharacterMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
             jumpRequested = true;
             
-        if (Input.GetKeyDown(KeyCode.Escape) && !GameManager.isGameOver)
+        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))&& !GameManager.isGameOver)
         {
             PauseManager pauseManager = FindObjectOfType<PauseManager>();
             if (pauseManager != null)

@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     // Tampilkan start panel
     void Start()
     {
-        //PlayerPrefs.DeleteAll(); //=> Kalau Mau hapus data penyimpanan e.g stars
+        // PlayerPrefs.DeleteAll(); //=> Kalau Mau hapus data penyimpanan e.g stars
         if (nextPanelToShow == "Start")
         {
             ShowStart();
